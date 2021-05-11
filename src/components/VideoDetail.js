@@ -1,5 +1,4 @@
 import React from "react";
-import Tags from "./Tags";
 
 const VideoDetail = ({ video, tags, handleTagsSelect }) => {
   if (!video) {
@@ -18,19 +17,41 @@ const VideoDetail = ({ video, tags, handleTagsSelect }) => {
   const videoSrc = `https://www.youtube.com/embed/${video.id.videoId}`;
   console.log(typeof video);
 
+  const handleStoringTagsLocally = (tagName) => {
+    let tagArr=JSON.parse(localStorage.getItem('tags'));
+    if(!(tagArr.includes(tagName))){
+      tagArr.push(tagName);
+    }
+    localStorage.setItem('tags',JSON.stringify(tagArr));
+    console.log(localStorage);
+  }
   return (
     <div>
+
       <div className="ui embed">
         <iframe src={videoSrc} allowFullScreen title="Video player" />
       </div>
       <div className="ui segment">
         <button className="ui button" onClick={() => handleTagsSelect() }>Tags</button>
-         {(tags)?
+         
+        <div class="ui toggle checkbox">
+          <input type="checkbox" class="hidden" readonly="" tabindex="0"/>
+          <label>Dim Page</label>
+        </div>
+
+        {(tags)?
           (<div>
-          {tags.map(tag => <span className="ui segment">{tag} <button className="ui button">+</button></span>)}
+          {tags.map((tag) => 
+              <button className="ui button segment" 
+                      onClick={()=>{handleStoringTagsLocally(tag)}}>
+                {tag} +
+              </button>
+          )
+          }
           </div>)
           :null
         }
+
       </div>
       <div className="ui segment">
         <h4 className="ui header">{video.snippet.title}</h4>
@@ -44,10 +65,7 @@ export default VideoDetail;
 
 
 // <div>
-//   <div class="ui toggle checkbox">
-//     <input type="checkbox" class="hidden" readonly="" tabindex="0"/>
-//     <label>Dim Page</label>
-//       </div> 
+ 
 //         <h5 class="ui header">Direction</h5>
 //         <div class="ui buttons">
 //           <button class="ui active button">Left</button>
@@ -63,16 +81,5 @@ export default VideoDetail;
 //           <button class="ui button">Uncover</button>
 //           <button class="ui button">Slide Along</button>
 //           <button class="ui button">Slide Out</button>
-//         <div style="overflow:hidden" class="ui segment pushable">
-//           <div class="ui inverted vertical labeled icon ui overlay left thin sidebar menu">
-//             <a class="item"><i aria-hidden="true" class="home icon">
-//               </i>Home</a><a class="item"><i aria-hidden="true" class="gamepad icon">
-//               </i>Games</a><a class="item"><i aria-hidden="true" class="camera icon">
-//               </i>Channels</a></div><div class="pusher">
-//                 <div class="ui basic segment">
-//                   <h3 class="ui header">Application Content</h3>
-//                   <img src="https://react.semantic-ui.com/images/wireframe/paragraph.png" class="ui image"/>
-//                 </div>
-//           </div>
-//         </div>
+        
 //       </div>

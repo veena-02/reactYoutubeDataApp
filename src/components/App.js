@@ -40,8 +40,11 @@ class App extends React.Component {
         this.setState({
             selectedVideoTags: tagRes.data.items[0].snippet.tags
         })
-        
+        if(localStorage.getItem('tags') === null){
+            localStorage.setItem('tags',JSON.stringify([]));
+        }    
     }
+
     render() {
         return (
             <div className='ui container' style={{marginTop: '1em'}}>
